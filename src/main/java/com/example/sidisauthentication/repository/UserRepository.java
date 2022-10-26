@@ -1,6 +1,9 @@
 package com.example.sidisauthentication.repository;
 
 import com.example.sidisauthentication.model.User;
+import com.example.sidisauthentication.model.UserDTO;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -26,5 +29,7 @@ public interface UserRepository extends JpaRepository<User,String> {
     User findUserByUsernameandpass(@Param("username") String username, @Param("Password") String password);
 
 
+    @Query("select new com.example.sidisauthentication.model.UserDTO(u) from User u where u.username = :username")
+    UserDTO findUserDTO(@Param("username") String username);
     Optional<User> findByUsername(String username);
 }
