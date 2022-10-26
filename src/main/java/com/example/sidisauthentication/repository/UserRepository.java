@@ -29,7 +29,7 @@ public interface UserRepository extends JpaRepository<User,String> {
     User findUserByUsernameandpass(@Param("username") String username, @Param("Password") String password);
 
 
-    @Query("select new com.example.sidisauthentication.model.UserDTO(u) from User u where u.username = :username")
-    UserDTO findUserDTO(@Param("username") String username);
+    @Query("select new com.example.sidisauthentication.model.UserDTO(u) from User u where u.username = :username and u.password = :password")
+    UserDTO findUserDTO(@Param("username") String username, @Param("Password") String password);
     Optional<User> findByUsername(String username);
 }
