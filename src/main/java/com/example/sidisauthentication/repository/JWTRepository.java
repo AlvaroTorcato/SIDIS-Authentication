@@ -7,5 +7,5 @@ import org.springframework.data.repository.query.Param;
 
 public interface JWTRepository extends JpaRepository<JWT,Integer> {
     @Query("select u from JWT u where u.token = :token")
-    boolean search(@Param("token") String jwt);
+    JWT search(@Param("token") String jwt);
 }

@@ -2,7 +2,8 @@ package com.example.sidisauthentication.controllers;
 
 import com.example.sidisauthentication.model.LoginRequest;
 
-import com.example.sidisauthentication.model.UserDTO;
+
+import com.example.sidisauthentication.model.UserDetailsDTO;
 import com.example.sidisauthentication.service.JWTService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -27,7 +28,7 @@ public class AuthController {
 
     @Operation(summary = "Get info about JWT token")
     @GetMapping("/search/{jwt}")
-    public UserDTO searchForUserUsingJWT(@Param("jwt") String jwt){
+    public UserDetailsDTO searchForUserUsingJWT(@PathVariable("jwt") String jwt){
         return service.searchForUser(jwt);
     }
 

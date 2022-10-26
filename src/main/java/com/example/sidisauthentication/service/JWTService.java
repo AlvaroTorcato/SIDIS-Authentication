@@ -59,9 +59,9 @@ public class JWTService {
         return jwtToken;
     }
 
-    public UserDTO searchForUser(String jwt) {
-        boolean find = jwtRepository.search(jwt);
-        if (find == false){
+    public UserDetailsDTO searchForUser(String jwt) {
+        JWT find = jwtRepository.search(jwt);
+        if (find == null){
             throw  new ResponseStatusException(HttpStatus.NOT_FOUND, "JWT Not Found ");
         }
         Claims claims = Jwts.parser().setSigningKey(secret)
@@ -70,12 +70,13 @@ public class JWTService {
                 claims.get("id",Integer.class),
                 claims.get("username", String.class),
                 claims.get("roles",String.class));
-        int expTime = claims.get("exp", Integer.class);
+        Date expTime = claims.get("exp", Date.class);
         Instant now = Instant.now();
         Date date = Date.from(now);
-        if (expTime > date)
-
-        return null;
+        if (expTime.after(date)){
+           new ResponseStatusException(HttpStatus.FORBIDDEN, "Expired token ");
+        }
+        return user;
 
     }
 }
