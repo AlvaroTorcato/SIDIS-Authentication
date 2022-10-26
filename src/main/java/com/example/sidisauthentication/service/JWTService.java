@@ -5,11 +5,14 @@ import com.example.sidisauthentication.model.LoginRequest;
 import com.example.sidisauthentication.model.UserDTO;
 import com.example.sidisauthentication.repository.JWTRepository;
 import com.example.sidisauthentication.repository.UserRepository;
+import com.example.sidisauthentication.utils.AES;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import javax.crypto.spec.SecretKeySpec;
 import java.security.Key;
@@ -35,7 +38,10 @@ public class JWTService {
     }
 
     public String generate(LoginRequest loginRequest){
-        UserDTO user = userRepository.findUserByUsername(loginRequest.getUsername());
+        UserDTO user = userRepository.findUserDTO(loginRequest.getUsername(), AES.encrypt(loginRequest.getPassword()));
+        if (user == null){
+            throw  new ResponseStatusException(HttpStatus.NOT_FOUND, "User Not Found ");
+        }
         Key hmacKey = new SecretKeySpec(Base64.getDecoder().decode(secret),
                 SignatureAlgorithm.HS256.getJcaName());
         Instant now = Instant.now();

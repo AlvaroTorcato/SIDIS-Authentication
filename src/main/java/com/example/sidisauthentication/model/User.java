@@ -75,7 +75,7 @@ public class User implements Serializable {
     }
 
     public void setPassword(String password) {
-        this.password = AES.encrypt(password,"IstoemesmoMUintoSeguro2");
+        this.password = password;
     }
 
     public String getEmail() {

@@ -1,5 +1,7 @@
 package com.example.sidisauthentication.utils;
 
+import org.springframework.beans.factory.annotation.Value;
+
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
 import java.io.UnsupportedEncodingException;
@@ -9,6 +11,9 @@ import java.util.Arrays;
 import java.util.Base64;
 
 public class AES {
+
+    @Value("${sidis.password}")
+    private static String secret;
 
     private static SecretKeySpec secretKey;
     private static byte[] key;
@@ -26,7 +31,7 @@ public class AES {
         }
     }
 
-    public static String encrypt(final String strToEncrypt, final String secret) {
+    public static String encrypt(final String strToEncrypt) {
         try {
             setKey(secret);
             Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
