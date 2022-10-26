@@ -1,23 +1,14 @@
 package com.example.sidisauthentication.model;
 
-import java.util.List;
-import java.util.Set;
-
-public class UserDTO {
+public class UserDetailsDTO {
     private int id;
     private String username;
-    private Set<Role> roles;
+    private String roles;
 
-
-    public UserDTO(int id, String username,Set<Role> roles) {
+    public UserDetailsDTO(int id, String username, String roles) {
         this.id = id;
         this.username = username;
         this.roles = roles;
-    }
-    public UserDTO(User user){
-        this.id = user.getId();
-        this.username = user.getUsername();
-        this.roles = user.getRoles();
     }
 
     public int getId() {
@@ -36,11 +27,11 @@ public class UserDTO {
         this.username = username;
     }
 
-    public Set<Role> getRoles() {
+    public String getRoles() {
         return roles;
     }
 
-    public void setRoles(Set<Role> roles) {
+    public void setRoles(String roles) {
         this.roles = roles;
     }
 }
