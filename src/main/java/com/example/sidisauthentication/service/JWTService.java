@@ -53,7 +53,7 @@ public class JWTService {
                 .claim("id", user.getId())
                 .claim("roles", user.getRoles().toString())
                 .setIssuedAt(Date.from(now))
-                .setExpiration(Date.from(now.plus(30l, ChronoUnit.MINUTES)))
+                .setExpiration(Date.from(now.plus(120l, ChronoUnit.MINUTES)))
                 .signWith(hmacKey)
                 .compact();
         return jwtToken;
