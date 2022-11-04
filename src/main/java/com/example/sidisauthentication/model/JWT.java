@@ -24,7 +24,9 @@ public class JWT implements Serializable {
         this.token = token;
     }
 
-    public JWT() {
+    public JWT(JWTAPOD apod) {
+        this.id = apod.getId();
+        this.token = apod.getToken();
 
     }
 

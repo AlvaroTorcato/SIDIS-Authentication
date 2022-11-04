@@ -93,7 +93,10 @@ public class JWTService {
     public UserDetailsDTO searchForUser(String jwt) {
         JWT find = jwtRepository.search(jwt);
         if (find == null){
-            throw  new ResponseStatusException(HttpStatus.NOT_FOUND, "JWT Not Found ");
+            find = service.retriveveJWTFromApi(jwt);
+            if (find == null){
+                throw  new ResponseStatusException(HttpStatus.NOT_FOUND, "JWT Not Found ");
+            }
         }
         Claims claims = Jwts.parser().setSigningKey(secret)
                 .parseClaimsJws(jwt).getBody();
