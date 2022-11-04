@@ -7,6 +7,13 @@ import com.example.sidisauthentication.utils.AES;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import net.minidev.json.JSONObject;
+import org.apache.http.HttpEntity;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.EntityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -19,6 +26,8 @@ import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.Base64;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 @Service
 public class JWTService {
@@ -33,6 +42,9 @@ public class JWTService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private RequestService service;
     public String createJWT(LoginRequest loginRequest){
         String string = generate(loginRequest);
         JWT jwt = new JWT(string);
@@ -43,7 +55,26 @@ public class JWTService {
     public String generate(LoginRequest loginRequest){
         UserDTO user = userRepository.findUserDTO(loginRequest.getUsername(), loginRequest.getPassword());
         if (user == null){
-            throw  new ResponseStatusException(HttpStatus.NOT_FOUND, "User Not Found ");
+            //try {
+            Map<String, String> map;
+            map = new HashMap<>();
+            map.put("username", loginRequest.getUsername());
+            map.put("password", loginRequest.getPassword());
+            JSONObject jo = new JSONObject(map);
+            System.out.println(jo.toString());
+                String str=service.post("http://localhost:8088/auth/signin", jo.toString());/*"{" +
+                        "username: "+loginRequest.getUsername()+", " +
+                        "password: "+loginRequest.getPassword()+
+                        "}");*/
+                System.out.println(str);
+                return str;
+            //}
+            //catch (){
+                //throw  new ResponseStatusException(HttpStatus.NOT_FOUND, "User Not Found ");
+            //}
+
+
+
         }
         Key hmacKey = new SecretKeySpec(Base64.getDecoder().decode(secret),
                 SignatureAlgorithm.HS256.getJcaName());
