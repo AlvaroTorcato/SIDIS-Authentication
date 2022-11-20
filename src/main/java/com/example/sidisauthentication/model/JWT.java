@@ -30,6 +30,9 @@ public class JWT implements Serializable {
 
     }
 
+    public JWT(){
+
+    }
     public int getId() {
         return id;
     }

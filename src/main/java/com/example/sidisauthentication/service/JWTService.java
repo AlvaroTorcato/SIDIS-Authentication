@@ -113,4 +113,25 @@ public class JWTService {
         return user;
 
     }
+
+    public UserDetailsDTO searchForUserInternal(String jwt) {
+        JWT find = jwtRepository.search(jwt);
+        if (find == null){
+            throw  new ResponseStatusException(HttpStatus.NOT_FOUND, "JWT Not Found ");
+        }
+        Claims claims = Jwts.parser().setSigningKey(secret)
+                .parseClaimsJws(jwt).getBody();
+        UserDetailsDTO user = new UserDetailsDTO(
+                claims.get("id",Integer.class),
+                claims.get("username", String.class),
+                claims.get("roles",String.class));
+        Date expTime = claims.get("exp", Date.class);
+        Instant now = Instant.now();
+        Date date = Date.from(now);
+        if (expTime.after(date)){
+            new ResponseStatusException(HttpStatus.FORBIDDEN, "Expired token ");
+        }
+        return user;
+
+    }
 }

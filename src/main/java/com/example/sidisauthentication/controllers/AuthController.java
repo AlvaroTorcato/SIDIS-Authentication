@@ -32,4 +32,11 @@ public class AuthController {
         return service.searchForUser(jwt);
     }
 
+    @Operation(summary = "Get info about JWT token to another API")
+    @GetMapping("/Internalsearch/{jwt}")
+    public UserDetailsDTO searchForUserUsingJWTInternal(@PathVariable("jwt") String jwt){
+        return service.searchForUserInternal(jwt);
+    }
+
+
 }
