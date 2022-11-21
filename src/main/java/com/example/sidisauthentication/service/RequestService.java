@@ -48,7 +48,7 @@ public class RequestService {
     }
 
     public JWT retriveveJWTFromApi(String jwt) {
-        String baseUrl = baseURL+"auth/search"+jwt;
+        String baseUrl = baseURL+"auth/internalSearch/"+jwt;
         JWT jwtCheck =null;
         try {
             InputStream responseStream = openConn(baseUrl).getInputStream();

@@ -33,7 +33,7 @@ public class AuthController {
     }
 
     @Operation(summary = "Get info about JWT token to another API")
-    @GetMapping("/Internalsearch/{jwt}")
+    @GetMapping("/internalSearch/{jwt}")
     public UserDetailsDTO searchForUserUsingJWTInternal(@PathVariable("jwt") String jwt){
         return service.searchForUserInternal(jwt);
     }
